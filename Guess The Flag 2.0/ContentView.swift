@@ -9,15 +9,27 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
+        // gradients can be used w an array of color
         ZStack{
             VStack(spacing: 0){
                 Color.red
+//                LinearGradient(colors: [.red, .white, .blue], startPoint: .top, endPoint: .bottom)
+                // Using the below method we can specify till where the colors should stop and start
+                LinearGradient(stops: [
+                    .init(color: .red, location: 0.45),
+                    .init(color: .blue, location: 0.55),
+                ], startPoint: UnitPoint.top, endPoint: .bottom)
+                // all gradients have the stops part and can also be used as a background
+//                RadialGradient(colors: [.blue, .black], center: .center, startRadius: 20, endRadius: 200)
+//                AngularGradient(colors: [.red, .yellow, .green, .blue, .purple, .red], center: .center)
+
                 Color.blue
+                
             }
             Text("Hey Santhosh")
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
                 .padding(50)
-                .background(.ultraThickMaterial)
+                .background(.blue.gradient)
 //            Color.orange
 //                .ignoresSafeArea()
 //            Color.red
