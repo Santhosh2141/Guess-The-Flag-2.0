@@ -24,12 +24,66 @@ struct ContentView: View {
 //                AngularGradient(colors: [.red, .yellow, .green, .blue, .purple, .red], center: .center)
 
                 Color.blue
-                
+
             }
-            Text("Hey Santhosh")
-                .foregroundStyle(.secondary)
-                .padding(50)
-                .background(.blue.gradient)
+            .ignoresSafeArea()
+            
+            VStack{
+                Button("Hey Santhosh"){
+                    print("Hi Santy!!")
+                }
+                    .foregroundStyle(.black)
+                    .font(.largeTitle)
+                    .padding(20)
+                    .background(.red.gradient)
+                Button("Click To Delete", role: .destructive, action: deleteButton)
+//                    .foregroundStyle(.black)
+                    .font(.largeTitle)
+                    .padding(20)
+                    .background(.blue.gradient)
+                Button("Button 1"){ }
+                    .buttonStyle(.bordered)
+                    .background(.white)
+                Button("Button 2", role: .destructive){ }
+                    .buttonStyle(.bordered)
+                    .background(.white)
+                Button("Button 3"){ }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.green)
+                Button("Button 4", role: .destructive){ }
+                    .buttonStyle(.borderedProminent)
+                // This is a custom button
+                Button {
+                    print("Button was tapped")
+                } label: {
+                    Text("Tap me!")
+                        .padding()
+                        .foregroundStyle(.white)
+                        .background(.red)
+                }
+
+                Button {
+                    print("Edit button was tapped")
+                } label: {
+                    Label("Edit", systemImage: "pencil")
+                        .padding()
+                        .foregroundStyle(.white)
+                        .background(.red)
+                }
+                Button() {
+                } label: {
+                    Label("Edit", systemImage: "eraser.line.dashed")
+                        .padding(10)
+                        .foregroundColor(.black)
+                        .background(.white)
+                }
+//                Image(decorative: "saint-anton-am-arlberg")
+//                Spacer()
+                Image(systemName: "pencil.circle")
+                    .foregroundStyle(.white)
+                    .font(.largeTitle)
+            }
+//
 //            Color.orange
 //                .ignoresSafeArea()
 //            Color.red
@@ -42,10 +96,13 @@ struct ContentView: View {
 //                .foregroundColor(.blue)
 //                .fontWeight(.heavy)
 //                .background(.red)
-            // this makes the zstack alone red.
+//             this makes the zstack alone red.
             
         }
         .ignoresSafeArea()
+    }
+    func deleteButton() {
+        print("Deleting")
     }
 }
 
