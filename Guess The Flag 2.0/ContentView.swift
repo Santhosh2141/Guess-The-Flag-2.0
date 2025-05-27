@@ -9,34 +9,31 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Spacer()
-            Spacer()
-            Text("Hello, world!")
-            Text("This is another text")
-            HStack(alignment: .bottom, spacing: 10){
-                Text("Hello, world!")
-                Text("This is another text")
-                Text("This is the third text")
+        ZStack{
+            VStack(spacing: 0){
+                Color.red
+                Color.blue
             }
-            HStack(alignment: .bottom, spacing: 10){
-                Text("Hello, world!")
-                Text("This is another text")
-                Text("This is the third text")
-            }
-            HStack(alignment: .bottom, spacing: 10){
-                Text("Hello, world!")
-                Text("This is another text")
-                Text("This is the third text")
-            }
-            ZStack(alignment: .top){
-                Text("Hello, world!")
-                Text("This is another text")
-            }
-            Spacer()
-            //Spacer takew all the remaining spaces
+            Text("Hey Santhosh")
+                .foregroundColor(.secondary)
+                .padding(50)
+                .background(.ultraThickMaterial)
+//            Color.orange
+//                .ignoresSafeArea()
+//            Color.red
+//                .frame(width: 200, height: 400)
+//            Color.primary
+//                .frame(width: 100,height: 200)
+//            Color(red: 1, green: 0.8, blue: 1)
+//                .frame(width: 50, height: 100)
+//            Text("Your Content")
+//                .foregroundColor(.blue)
+//                .fontWeight(.heavy)
+//                .background(.red)
+            // this makes the zstack alone red.
+            
         }
-        .padding()
+        .ignoresSafeArea()
     }
 }
 
