@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var alertOption = false
     var body: some View {
         // gradients can be used w an array of color
         ZStack{
@@ -77,11 +78,20 @@ struct ContentView: View {
                         .foregroundColor(.black)
                         .background(.white)
                 }
+                Button(){
+                    alertOption.toggle()
+                } label: {
+                    Label("Alert", systemImage: "light.beacon.max")
+                        .padding(10)
+                        .foregroundColor(.black)
+                        .background(.white)
+                }
 //                Image(decorative: "saint-anton-am-arlberg")
 //                Spacer()
-                Image(systemName: "pencil.circle")
-                    .foregroundStyle(.white)
-                    .font(.largeTitle)
+//                Image(systemName: "pencil.circle")
+//                    .foregroundStyle(.white)
+//                    .font(.largeTitle)
+                
             }
 //
 //            Color.orange
@@ -100,6 +110,14 @@ struct ContentView: View {
             
         }
         .ignoresSafeArea()
+        .alert("Important Message" ,isPresented: $alertOption) {
+            Button("OK"){
+                // button automatically toggles the alert
+            }
+        }
+    message: {
+        Text("Please read this.")
+    }
     }
     func deleteButton() {
         print("Deleting")
