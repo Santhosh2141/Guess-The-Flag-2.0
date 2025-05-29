@@ -16,6 +16,8 @@ struct ContentView: View {
     @State private var score = 0
     @State private var showingScore = false
     @State private var scoreTitle = ""
+    @State private var questionNumber = 1
+    @State private var maxQuestion = false
     var body: some View {
         ZStack{
 //            LinearGradient(colors: [.blue, .black], startPoint: .top, endPoint: .bottom)
@@ -62,8 +64,12 @@ struct ContentView: View {
                 
                 Spacer()
                 Spacer()
-                Text("Score: \(score)")
+                Text("Question: \(questionNumber)/8")
                     .padding(.top, 25)
+                    .foregroundStyle(.white)
+                    .font(.headline.bold())
+                Text("Score: \(score)")
+                    .padding(.top, 5)
                     .foregroundStyle(.white)
                     .font(.headline.bold())
                 Spacer()
@@ -74,6 +80,15 @@ struct ContentView: View {
             Button("Continue", action: replayGame)
         } message: {
             Text("Your score is \(score)")
+        }
+        .alert("""
+            You've reached the end.
+            Do you wish to restart?
+            """, isPresented: $maxQuestion) {
+            Button("Restart", action: restartGame)
+//            questionNumber = 1
+        } message: {
+            Text("You got a score of \(score)/8")
         }
         
         // gradients can be used w an array of color
@@ -189,18 +204,34 @@ struct ContentView: View {
 //        print("Deleting")
 //    }
     func flagTapped(_ number: Int){
+        
         if number == correctAnswer {
             score += 1
             scoreTitle = "You've picked the Right Flag"
+            if questionNumber == 8 {
+                maxQuestion = true
+                return
+            }
         } else {
-            scoreTitle = "You've picked the Wrong Flag"
+            scoreTitle = "Wrong you chose \(countries[number])"
+            if questionNumber == 8 {
+                maxQuestion = true
+                return
+            }
         }
         showingScore = true
+        questionNumber += 1
     }
     
     func replayGame() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+    }
+    
+    func restartGame(){
+        score = 0
+        questionNumber = 1
+        replayGame()
     }
 }
 
