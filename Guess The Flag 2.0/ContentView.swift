@@ -10,11 +10,26 @@ import SwiftUI
 struct FlagImage: View{
     
     var countryFlag: String
+    var animationValue: Double
+    var selected: Int
+    var number: Int
+    var animationApplied: Bool
+    var falseAnimation: Bool
+    
     var body: some View{
         VStack{
             Image(countryFlag)
                 .clipShape(RoundedRectangle(cornerRadius: 25))
                 .shadow(radius: 10)
+            // adding spinApplied so that when its true only it spins. if we click wrong button there should be no spin to the clicked flag
+                .rotation3DEffect(.degrees(animationApplied && number == selected ? animationValue : 0), axis: (x: 0.0, y: 1.0, z: 0.0))
+            // by default, opacityApplied is false. so all will be opaque.
+            // when we click correct button, opacityApplied = true and number == selected is false. so 1 opacity and other 2 buttons, number!=selected will also be true so 0.25
+                .opacity(animationApplied && number != selected ? 0.25 : 1)
+                .scaleEffect(animationApplied && number == selected ? 1.5 : 1)
+                .blur(radius: (falseAnimation && number == selected ? 5 : 0))
+                .rotation3DEffect(.degrees(animationApplied && number != selected ? -animationValue : 0), axis: (x: 0.0, y: 1.0, z: 0.0))
+//
         }
     }
 }
@@ -30,6 +45,12 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     @State private var questionNumber = 1
     @State private var maxQuestion = false
+    
+    @State private var selectedFlag = 0
+    @State private var animationValue = 0.0
+    @State private var animationApplied = false
+    @State private var falseAnimation = false
+    
     var body: some View {
         ZStack{
 //            LinearGradient(colors: [.blue, .black], startPoint: .top, endPoint: .bottom)
@@ -61,8 +82,20 @@ struct ContentView: View {
                             //RECTANGLE, ROUNDED RECTANGLE,
                             // CIRCLE, CAPSULE
                             flagTapped(number)
+                            
+                            // once the function is run, selectedFlag is assigned the number.
+                            // now we update animation amount if both are same.
+                            if correctAnswer == selectedFlag {
+                                withAnimation(.spring(response: 1, dampingFraction: 0.5)){
+                                    animationValue += 360
+                                    // when the flag is correct, we make the opacity true.
+//                                    opacityApplied = true
+                                }
+                            }
+                            
                         } label: {
-                            FlagImage(countryFlag: countries[number])
+//                            FlagImage(countryFlag: countries[number],spi animationValue: animationValue)
+                            FlagImage(countryFlag: countries[number], animationValue: animationValue, selected: selectedFlag, number: number, animationApplied: animationApplied, falseAnimation: falseAnimation)
                         }
                     }
                 }
@@ -71,7 +104,6 @@ struct ContentView: View {
                 .padding(.bottom, 20)
                 .background(.ultraThinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 40))
-                
                 Spacer()
                 Spacer()
                 Text("Question: \(questionNumber)/8")
@@ -214,15 +246,19 @@ struct ContentView: View {
 //        print("Deleting")
 //    }
     func flagTapped(_ number: Int){
-        
+        selectedFlag = number
         if number == correctAnswer {
             score += 1
             scoreTitle = "You've picked the Right Flag"
+            animationApplied = true
+            falseAnimation = false
             if questionNumber == 8 {
                 maxQuestion = true
                 return
             }
         } else {
+            animationApplied = false
+            falseAnimation = true
             scoreTitle = "Wrong you chose \(countries[number])"
             if questionNumber == 8 {
                 maxQuestion = true
@@ -236,11 +272,16 @@ struct ContentView: View {
     func replayGame() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        // after a round is over, resetting opacityApplied
+        animationApplied = false
+        falseAnimation = false
     }
     
     func restartGame(){
         score = 0
         questionNumber = 1
+        animationApplied = false
+        falseAnimation = false
         replayGame()
     }
 }
